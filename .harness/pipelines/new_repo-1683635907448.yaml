@@ -31,3 +31,64 @@ pipeline:
             spec: {}
             type: Cloud
         type: CI
+    - parallel:
+        - stage:
+            name: CD
+            identifier: CD
+            description: ""
+            type: Deployment
+            spec:
+              deploymentType: Kubernetes
+              service:
+                serviceRef: Service1
+              environment:
+                environmentRef: Env1
+                deployToAll: false
+                infrastructureDefinitions:
+                  - identifier: Infra1
+              execution:
+                steps:
+                  - step:
+                      type: K8sDryRun
+                      name: K8sDryRun_1
+                      identifier: K8sDryRun_1
+                      spec: {}
+                      timeout: 10m
+                rollbackSteps: []
+            tags: {}
+            failureStrategies:
+              - onFailure:
+                  errors:
+                    - AllErrors
+                  action:
+                    type: StageRollback
+        - stage:
+            name: CD2
+            identifier: CD2
+            description: ""
+            type: Deployment
+            spec:
+              deploymentType: Kubernetes
+              service:
+                serviceRef: Service1
+              environment:
+                environmentRef: Env1
+                deployToAll: false
+                infrastructureDefinitions:
+                  - identifier: Infra1
+              execution:
+                steps:
+                  - step:
+                      type: K8sDryRun
+                      name: K8sDryRun_1
+                      identifier: K8sDryRun_1
+                      spec: {}
+                      timeout: 10m
+                rollbackSteps: []
+            tags: {}
+            failureStrategies:
+              - onFailure:
+                  errors:
+                    - AllErrors
+                  action:
+                    type: StageRollback
